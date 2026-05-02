@@ -27,8 +27,6 @@ if (scroll) {
 }
 
 // Booking confirm
-window.submitBooking = async function(btn) {
-  const name = document.getElementById('name').value.trim();
   const phone = document.getElementById('wa').value.trim();
   const service = document.getElementById('service').value;
   const barber = document.getElementById('barber').value || 'No preference';
