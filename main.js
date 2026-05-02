@@ -27,11 +27,53 @@ if (scroll) {
 }
 
 // Booking confirm
-window.submitBooking = function(btn){
-  btn.textContent = '✓ We\'ll hit you on WhatsApp';
-  btn.style.background = '#2c6e49';
-  setTimeout(() => {
-    btn.textContent = 'Confirm Booking →';
-    btn.style.background = '';
-  }, 3500);
+window.submitBooking = async function(btn) {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('wa').value.trim();
+  const service = document.getElementById('service').value;
+  const barber = document.getElementById('barber').value || 'No preference';
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+  const notes = document.getElementById('notes').value.trim();
+
+  if (!name || !phone || !service || !date || !time) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    await fetch('https://mindgeek.app.n8n.cloud/webhook/blade-bree-booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customerName: name,
+        customerPhone: phone,
+        service: service,
+        barber: barber,
+        date: date,
+        time: time,
+        notes: notes
+      })
+    });
+
+    btn.textContent = '✓ Booked! Check your WhatsApp';
+    btn.style.background = '#2c6e49';
+    setTimeout(() => {
+      btn.textContent = 'Confirm Booking →';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 5000);
+
+  } catch (error) {
+    btn.textContent = 'Something went wrong — try again';
+    btn.style.background = '#c0392b';
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.textContent = 'Confirm Booking →';
+      btn.style.background = '';
+    }, 3000);
+  }
 }
