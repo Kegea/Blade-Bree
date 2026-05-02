@@ -7,6 +7,11 @@ const io = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 reveals.forEach(el => io.observe(el));
 
+// FAILSAFE: If animations haven't triggered after 1.5s, force show everything
+setTimeout(() => {
+  reveals.forEach(el => el.classList.add('on'));
+}, 1500);
+
 // Drag scroll barbers
 const scroll = document.getElementById('barberScroll');
 let isDown=false, startX, scrollLeft;
