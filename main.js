@@ -44,6 +44,9 @@ window.submitBooking = async function(btn) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
+  try {
+    await fetch('https://mindgeek.app.n8n.cloud/webhook/Booking', {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         customerName: name,
